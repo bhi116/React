@@ -8,7 +8,13 @@ function App() {
 
   const addTodo = (event) => {
     event.preventDefault();
+    console.log("Lisätään todo todos-taulukkoon");
     setTodos([...todos, todo]);
+  }
+
+  const removeTodo = (index) => {
+    console.log("Mennään poistamaan todo todos-taulukosta" + index);
+    setTodos(todos.filter((todo, i) => i !== index));
   }
 
   return (
@@ -33,6 +39,7 @@ function App() {
         <tr key={index}>
           <td>{todo.date}</td>
           <td>{todo.description}</td>
+          <td><button onClick={() => removeTodo(index)}>Poista</button></td>
         </tr>
         ))}
       </tbody>
