@@ -14,7 +14,7 @@ function TodoList() {
       }
     
       const removeTodo = (index) => {
-        setTodos(todos.filter((_, i) => i !== index));
+        setTodos(todos.filter((todo, i) => i !== index));
       };
     
       return (
