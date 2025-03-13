@@ -58,11 +58,14 @@ function TodoList() {
           <button type="button" onClick={deleteTodo}>Delete</button>
          </form>
          <div style={{width: 700, height: 500}}>
+         
          <AgGridReact 
           rowData={todos}
           columnDefs={columns}
           ref={gridRef}
-          rowSelection="single"
+          rowSelection={{
+            mode: "singleRow"
+          }}
           onGridReady={ params => gridRef.current = params.api }
           />
           </div> 
