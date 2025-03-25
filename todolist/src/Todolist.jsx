@@ -1,6 +1,7 @@
 import { AgGridReact } from "ag-grid-react";
 import { useRef, useState } from 'react'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
+import { Box, Button, Stack, TextField } from '@mui/material';
 
 // Register all Community features
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -42,24 +43,38 @@ function TodoList() {
       ]
     
       return (
-        <>
-        <h1>Add todo:</h1>
-        <form onSubmit={addTodo} style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <label>Description:
-          <input type="text" name="description" value={todo.description} placeholder="Add todo" onChange={(event) => setTodo({...todo, description: event.target.value})}></input>
-          </label>
-          <label>Date:
-          <input type="date" name="date" value={todo.date} onChange={(event) => setTodo({...todo, date: event.target.value})}></input>
-          </label>
-          <label>Priority:
-          <input type="text" name="priority" value={todo.priority} placeholder="Priority" onChange={(event) => setTodo({...todo, priority: event.target.value})}></input>
-          </label>
-          <button type="submit">Add</button>
-          <button type="button" onClick={deleteTodo}>Delete</button>
-         </form>
-         <div style={{width: 700, height: 500}}>
+        <Box sx={{ 
+          display: "flex", 
+          flexDirection: "column", 
+          alignItems: "center", 
+          justifyContent: "center", 
+          height: "80vh"
+        }}>
+          
+        <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" mt={2}>
+          <TextField
+            label="Description"
+            type="text" 
+            name="description"
+            value={todo.description} placeholder="Add todo" onChange={(event) => setTodo({...todo, description: event.target.value})}
+          />
+          <TextField
+            type="date"
+            name="date"
+            value={todo.date} onChange={(event) => setTodo({...todo, date: event.target.value})}
+          />
+          <TextField
+            label="Priority"
+            type="text" 
+            name="priority" 
+            value={todo.priority} placeholder="Priority" onChange={(event) => setTodo({...todo, priority: event.target.value})}
+          />
+          <Button variant="contained" color="success" onClick={addTodo}>Add</Button>
+          <Button variant="outlined" color="error" onClick={deleteTodo}>Delete</Button>
+        </Stack>
+        <div style={{width: 700, height: 500}}>
          
-         <AgGridReact 
+        <AgGridReact 
           rowData={todos}
           columnDefs={columns}
           ref={gridRef}
@@ -69,7 +84,8 @@ function TodoList() {
           onGridReady={ params => gridRef.current = params.api }
           />
           </div> 
-        </>
+      
+        </Box>
       )
     
   }
