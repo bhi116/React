@@ -2,25 +2,33 @@ import { AgGridReact } from "ag-grid-react";
 import { useRef, useState } from 'react'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
 import { Box, Button, Stack, TextField } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers';
+
 
 // Register all Community features
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 function TodoList() {
-     const [todo, setTodo] = useState({description: '', date: '', priority: ''});
+     const [todo, setTodo] = useState({description: '', date: null, priority: ''});
       const [todos, setTodos] = useState([]);
       const gridRef = useRef();
     
     
       const addTodo = (event) => {
         event.preventDefault();
-        if (!todo.description.trim() || !todo.date.trim() || !todo.priority.trim()) {
+        if (!todo.description.trim() || !todo.date || !todo.priority.trim()) {
           alert("All fields must be filled!");
           return;
         }
+        const formattedTodo = {
+          ...todo,
+          date: todo.date.format("DD/MM/YYYY")
+        };
         console.log("Lisätään todo todos-taulukkoon");
-        setTodos([...todos, todo]);
-        setTodo({ description: "", date: "", priority: "" });
+        setTodos([...todos, formattedTodo]);
+        setTodo({ description: "", date: null, priority: "" });
       }
     
       const deleteTodo = () => {
@@ -58,14 +66,18 @@ function TodoList() {
             name="description"
             value={todo.description} placeholder="Add todo" onChange={(event) => setTodo({...todo, description: event.target.value})}
           />
-          <TextField
-            type="date"
-            name="date"
-            value={todo.date} onChange={(event) => setTodo({...todo, date: event.target.value})}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Date"
+            value={todo.date}
+            onChange={(newValue) => setTodo({ ...todo, date: newValue.startOf('day') })}
+            renderInput={(params) => <TextField {...params} />}
           />
+          </LocalizationProvider>
           <TextField
             label="Priority"
-            type="text" 
+            type="text"
+            format="DD/MM/YYYY" 
             name="priority" 
             value={todo.priority} placeholder="Priority" onChange={(event) => setTodo({...todo, priority: event.target.value})}
           />
