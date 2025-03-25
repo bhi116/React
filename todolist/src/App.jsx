@@ -1,22 +1,20 @@
 import './App.css'
-import { Outlet } from "react-router-dom";
-import { AppBar, Box, Container, CssBaseline, Toolbar, Tabs, Tab, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Outlet, Link, useLocation } from "react-router-dom";
+import { AppBar, Box, Container, CssBaseline, Toolbar, Tabs, Tab} from '@mui/material';
+
 
 function App() {
-  const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const location = useLocation();
+  const tabValue = location.pathname === "/" ? 0 : location.pathname === "/todos" ? 1 : false;
 
   return (
     <>
       <AppBar position="fixed" sx={{ width: "100%", backgroundColor: "white" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "center", gap: 3 }}>
-          <Tabs value={value} onChange={handleChange} indicatorColor="secondary" sx={{ "& .MuiTabs-indicator": { backgroundColor: "pink" } }}>
-            <Tab label="Home"/>
-            <Tab label="Todos"/>
+          <Tabs value={tabValue} indicatorColor="secondary" sx={{ "& .MuiTabs-indicator": { backgroundColor: "pink" } }}>
+          <Tab label="Home" component={Link} to="/" />
+          <Tab label="Todos" component={Link} to="/todos" />
           </Tabs>
         </Toolbar>
       </AppBar>
@@ -24,10 +22,7 @@ function App() {
       <Box sx={{ marginTop: 8, padding: 2 }}>
         <Container maxWidth="xl">
           <CssBaseline />
-          {value === 0 && (
-            <Typography variant="h4" align="center">Welcome</Typography>
-          )}
-          {value === 1 && <Outlet />}
+          <Outlet/>
         </Container>
       </Box>
     </>
