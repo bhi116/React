@@ -5,7 +5,7 @@ import { Box, Button, Stack, TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers';
-
+import 'dayjs/locale/fi';
 
 // Register all Community features
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -51,6 +51,7 @@ function TodoList() {
       ]
     
       return (
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fi">
         <Box sx={{ 
           display: "flex", 
           flexDirection: "column", 
@@ -66,18 +67,17 @@ function TodoList() {
             name="description"
             value={todo.description} placeholder="Add todo" onChange={(event) => setTodo({...todo, description: event.target.value})}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          
           <DatePicker
             label="Date"
             value={todo.date}
             onChange={(newValue) => setTodo({ ...todo, date: newValue.startOf('day') })}
             renderInput={(params) => <TextField {...params} />}
           />
-          </LocalizationProvider>
+          
           <TextField
             label="Priority"
             type="text"
-            format="DD/MM/YYYY" 
             name="priority" 
             value={todo.priority} placeholder="Priority" onChange={(event) => setTodo({...todo, priority: event.target.value})}
           />
@@ -98,6 +98,7 @@ function TodoList() {
           </div> 
       
         </Box>
+        </LocalizationProvider>
       )
     
   }
